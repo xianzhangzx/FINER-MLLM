@@ -23,15 +23,17 @@ def generation_score(anno_file, result_file):
     return copy.deepcopy(coco_eval.eval)
 
 
-"""Class that close the output of print.
+
+class HiddenPrints:
+    """Class that close the output of print.
+    
     Example:
     ```
     with HiddenPrints():
         print('the print is hidden')
     print('the print is show)
     ```
-"""
-class HiddenPrints:
+    """
     def __enter__(self):
         self._original_stdout = sys.stdout
         sys.stdout = open(os.devnull, 'w')
@@ -121,59 +123,6 @@ def set_logger(log_path):
     stream_handler = logging.StreamHandler()
     stream_handler.setFormatter(logging.Formatter('%(message)s'))
     logger.addHandler(stream_handler)
-
-
-def save_dict_to_json(d, json_path):
-    """Saves dict of floats in json file
-
-    Args:
-        d: (dict) of float-castable values (np.float, int, float, etc.)
-        json_path: (string) path to json file
-    """
-    with open(json_path, 'w') as f:
-        # We need to convert the values to float for json (it doesn't accept np.array, np.float, )
-        d = {k: float(v) for k, v in d.items()}
-        json.dump(d, f, indent=4)
-
-
-def save_checkpoint(state, is_best, checkpoint):
-    """Saves model and training parameters at checkpoint + 'last.pth.tar'. If is_best==True, also saves
-    checkpoint + 'best.pth.tar'
-
-    Args:
-        state: (dict) contains model's state_dict, may contain other keys such as epoch, optimizer state_dict
-        is_best: (bool) True if it is the best model seen till now
-        checkpoint: (string) folder where parameters are to be saved
-    """
-    filepath = os.path.join(checkpoint, 'last.pth.tar')
-    if not os.path.exists(checkpoint):
-        print("Checkpoint Directory does not exist! Making directory {}".format(checkpoint))
-        os.mkdir(checkpoint)
-    else:
-        print("Checkpoint Directory exists! ")
-    torch.save(state, filepath)
-    if is_best:
-        shutil.copyfile(filepath, os.path.join(checkpoint, 'best.pth.tar'))
-
-
-def load_checkpoint(checkpoint, model, optimizer=None):
-    """Loads model parameters (state_dict) from file_path. If optimizer is provided, loads state_dict of
-    optimizer assuming it is present in checkpoint.
-
-    Args:
-        checkpoint: (string) filename which needs to be loaded
-        model: (torch.nn.Module) model for which the parameters are loaded
-        optimizer: (torch.optim) optional: resume optimizer from checkpoint
-    """
-    if not os.path.exists(checkpoint):
-        raise("File doesn't exist {}".format(checkpoint))
-    checkpoint = torch.load(checkpoint)
-    model.load_state_dict(checkpoint['state_dict'])
-
-    if optimizer:
-        optimizer.load_state_dict(checkpoint['optim_dict'])
-
-    return checkpoint
 
 
 if __name__ == '__main__':

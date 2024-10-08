@@ -29,9 +29,9 @@ parser.add_argument('--dataset', default = 'clevr', help = "data set type")
 parser.add_argument('--spot_path', default = 'your dataset dir')
 parser.add_argument('--clver_path', default='your dataset dir')
 parser.add_argument('--IER_path', default = 'your dataset dir')
-parser.add_argument('--spot_rag_path', default='rag_store/spot_filter_change_retrieved_caps.json') # rag_store/spot_change_retrieved_caps.json
-parser.add_argument('--clver_rag_path', default="rag_store/clevr_filter_change_retrieved_caps.json") # rag_store/clevr_change_retrieved_caps.json
-parser.add_argument('--IER_rag_path', default = 'rag_store/IER_change_retrieved_caps.json')
+parser.add_argument('--spot_rag_path', default='rag_store/spot_retrieval_corpus_store.json') 
+parser.add_argument('--clver_rag_path', default="rag_store/clevr_retrieval_corpus_store.json") 
+parser.add_argument('--IER_rag_path', default = 'rag_store/IER_retrieval_corpus_store.json')
 parser.add_argument('--model_pth', default = '/zhang_xian/model_pth/Finer-MLLM/clevr_model_params.pth')
 # parser.add_argument('--model_pth', default = '/zhang_xian/model_pth/Finer-MLLM/spot_model_params.pth')
 parser.add_argument('--mode', default = 'train') 
@@ -55,8 +55,8 @@ parser.add_argument('--early_stop_num', type=int, default=10)
 parser.add_argument('--prompt', type=str, 
                     default="the difference between the before image and after image is that")
 
-parser.add_argument('--model_type', type=str, default='vicuna7b') # caption_coco_opt2.7b
-parser.add_argument('--model_dir', default='exp/clevr_k10', help="save results")
+parser.add_argument('--model_type', type=str, default='vicuna7b') 
+parser.add_argument('--model_dir', default='exp/clevr', help="save results")
 parser.add_argument('--gt_dir', default='./eval_data', help='the ground-truth caption')
 parser.add_argument('--num_workers', type=int, default=8)
 
@@ -339,10 +339,6 @@ if __name__ == '__main__':
     if not os.path.exists(args.model_dir):
         os.makedirs(args.model_dir)
 
-    logging.info('save arguments...')
-    for k in args.__dict__.keys():
-        logging.info("\t'{}'={}".format(k, args.__dict__[k]))  
-
     seed = args.seed
     random.seed(seed)
     torch.manual_seed(seed)
@@ -352,6 +348,11 @@ if __name__ == '__main__':
     torch.backends.cudnn.benchmark = False
     torch.backends.cudnn.deterministic = False
     utils.set_logger(os.path.join(args.model_dir, 'train.log'))
+
+    logging.info('save arguments...')
+    for k in args.__dict__.keys():
+        logging.info("\t'{}'={}".format(k, args.__dict__[k]))  
+
     logging.info('Loading the datasets and model...')
 
     if args.mode == 'train':
