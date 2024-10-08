@@ -14,7 +14,7 @@ The codebase is mainly built with following libraries:
 
 - Python 3.9
 - [PyTorch](https://pytorch.org/) and [torchvision](https://github.com/pytorch/vision). 
-- [huggingface]()
+- [huggingface](https://huggingface.co/docs/transformers/main/zh/installation)
 - [lavis](https://pypi.org/project/salesforce-lavis/)
 - [loralib](https://pypi.org/project/loralib/)
 
@@ -76,7 +76,7 @@ rag_store
 |–– IER_retrieval_corpus_store.json
 ```
 
-**Note**: Since  [CLIP4IDC](https://github.com/sushizixin/CLIP4IDC/tree/master) does not provide the pre-trained weights on Image-Editing Requests, we retrieve the corpus after reproducing it according to the paper's method. The retrieval results we reproduced on Image-Editing Requests are slightly worse than the retrieval metrics provided by the original paper. We also provide the detailed process of retrieval corpus on [FINER-MLLM ModelScope](https://www.modelscope.cn/models/izhangxian/FINER-MLLM).
+**Note**: Since  [CLIP4IDC](https://github.com/sushizixin/CLIP4IDC/tree/master) does not provide the pre-trained weights on Image-Editing-Request, we retrieve the corpus after reproducing it according to the paper's method. The retrieval results we reproduced on Image-Editing-Request are slightly worse than the retrieval metrics provided by the original paper. We also provide the detailed process of retrieval corpus on [FINER-MLLM ModelScope](https://www.modelscope.cn/models/izhangxian/FINER-MLLM).
 
 
 
@@ -122,4 +122,3 @@ year={2024},
 url={https://openreview.net/forum?id=eiGs5VCsYM}
 }
 ```
-
